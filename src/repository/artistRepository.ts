@@ -11,15 +11,24 @@ export const collections: { artistsCollection?: mongoDB.Collection } = {}
 export async function connectToDatabase() {
     dotenv.config();
 
-    const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.DB_CONN_STRING!);
+    if (!process.env.DB_CONN_STRING) {
+        throw new Error("Please set DB_CONN_STRING in the .env file.");
+    }
+
+    if (!process.env.ARTISTS_COLLECTION_NAME) {
+        throw new Error("Please set DB_CONN_STRING in the .env file.");
+    }
+
+    const dbConnectionString: string = process.env.DB_CONN_STRING;
+    const artistsCollectionName: string = process.env.ARTISTS_COLLECTION_NAME;
+
+    const client: mongoDB.MongoClient = new mongoDB.MongoClient(dbConnectionString);
 
     await client.connect();
 
     const db: mongoDB.Db = client.db(process.env.DB_NAME);
 
-    const artistsCollection: mongoDB.Collection = db.collection(process.env.ARTISTS_COLLECTION_NAME!);
+    const artistsCollection: mongoDB.Collection = db.collection(artistsCollectionName);
 
     collections.artistsCollection = artistsCollection;
-
-    console.log(`Successfully connected to database: ${db.databaseName} and collection: ${artistsCollection.collectionName}`);
 }
