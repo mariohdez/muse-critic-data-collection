@@ -1,0 +1,30 @@
+{
+  "name": "muse-critic-data-collection",
+  "version": "1.0.0",
+  "description": "A web app to get artist/album data from spotify.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "start": "node ./dist/app.js",
+    "dist": "tsc -p .",
+    "dev": "node ./dist/app.js",
+    "type": "module"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariohdez/muse-critic-data-collection.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariohdez/muse-critic-data-collection/issues"
+  },
+  "homepage": "https://github.com/mariohdez/muse-critic-data-collection#readme",
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/node": "^18.11.9",
+    "typescript": "^4.9.3"
+  }
+}
