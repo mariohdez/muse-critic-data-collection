@@ -26,5 +26,9 @@
     "@tsconfig/node16": "^1.0.3",
     "@types/node": "^18.11.9",
     "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "mongodb": "^4.12.0"
   }
 }
