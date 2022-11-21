@@ -20,21 +20,26 @@ export async function getSpotifyAuthenticationToken() {
     const clientId: string = process.env.SPOTIFY_CLIENT_ID;
     const clientSecret: string = process.env.SPOTIFY_CLIENT_SECRET;
 
-    var authValue = 'Basic ' + new Buffer(clientId + ':' + clientSecret).toString('base64');
+    var authValue = 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
 
     const data = {
         grant_type: "client_credentials",
     };
 
-    const options = {
-        headers: {
-            'Authorization': authValue
-        },
+    var httpOptions = {
+        url: spotifyTokenUrl,
         data: qs.stringify(data),
-        spotifyTokenUrl,
+        method: 'post',
+        headers: { 'Authorization': authValue }
     };
 
-    var response: any = await axios.post(spotifyTokenUrl, options)
-
-    console.log(response);
+    await axios(httpOptions).then((resp: {data: {
+        access_token: string,
+        token_type: string,
+        expires_in: number
+    }}) => {
+        console.log(resp.data);
+    }).catch((err) => {
+        console.log(err);
+    });
 }
