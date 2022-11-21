@@ -2,8 +2,6 @@
 
 import * as dotenv from "dotenv";
 import axios from 'axios';
-import { stringify } from "querystring";
-const qs = require("qs");
 
 const spotifyTokenUrl: string = "https://accounts.spotify.com/api/token";
 
