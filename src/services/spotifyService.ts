@@ -2,9 +2,12 @@
 
 import * as dotenv from "dotenv";
 import axios from 'axios';
+import { stringify } from "querystring";
 const qs = require("qs");
 
 const spotifyTokenUrl: string = "https://accounts.spotify.com/api/token";
+
+var authToken: string = "";;
 
 export async function getSpotifyAuthenticationToken() {
     dotenv.config();
@@ -33,13 +36,39 @@ export async function getSpotifyAuthenticationToken() {
         headers: { 'Authorization': authValue }
     };
 
-    await axios(httpOptions).then((resp: {data: {
-        access_token: string,
-        token_type: string,
-        expires_in: number
-    }}) => {
-        console.log(resp.data);
+    await axios(httpOptions).then((resp: {
+        data: {
+            access_token: string,
+            token_type: string,
+            expires_in: number
+        }
+    }) => {
+        console.log("Got access otken successfully.")
+        authToken = resp.data.access_token;
     }).catch((err) => {
         console.log(err);
     });
+}
+
+export async function getArtistId(test: string): Promise<any> {
+    const spotifySearchUrl: string = `https://api.spotify.com/v1/search?q=Kendrick+Lamar&type=artist&limit=5`;
+
+    var httpOptions = {
+        url: spotifySearchUrl,
+        method: 'get',
+        headers: { 'Authorization': `Bearer ${authToken}` }
+    };
+
+
+    await axios(httpOptions).then((response: { data: IData, status: number }) => {
+        console.log("[getArtistId]: " + response.data.artists.items[0].name)
+    }).catch((err) => {
+        console.log("err: " + err);
+    })
+}
+
+interface IData {
+    artists: {
+        items: { id: string, name: string, images: { url: string }[] }[]
+    }
 }

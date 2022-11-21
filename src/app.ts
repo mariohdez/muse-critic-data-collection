@@ -2,7 +2,7 @@
 
 import { ObjectId } from "mongodb";
 import { connectToDatabase, collections } from './repository/artistRepository';
-import { getSpotifyAuthenticationToken } from "./services/spotifyService";
+import { getSpotifyAuthenticationToken, getArtistId } from "./services/spotifyService";
 
 
 connectToDatabase()
@@ -20,6 +20,9 @@ connectToDatabase()
 
 getSpotifyAuthenticationToken().then(async () => {
     console.log("got spotify auth token.")
+    getArtistId('test').then(async () => {
+        console.log("getartistid...")
+    })
 }).catch((error: Error) => {
     console.error("Spotify auth token failed", error);
     process.exit();
