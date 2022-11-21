@@ -4,7 +4,6 @@ import { ObjectId } from "mongodb";
 import { connectToDatabase, collections } from './repository/artistRepository';
 import { getSpotifyAuthenticationToken, getArtistId } from "./services/spotifyService";
 
-
 connectToDatabase()
     .then(async () => {
         const query = { _id: new ObjectId("637707a10e18a58d74d86fcb") };
