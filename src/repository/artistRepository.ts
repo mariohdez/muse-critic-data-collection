@@ -1,13 +1,10 @@
 "use strict";
 
-// External Dependencies
 import * as mongoDB from "mongodb";
 import * as dotenv from "dotenv";
 
-// Global Variables
 export const collections: { artistsCollection?: mongoDB.Collection } = {}
 
-// Initialize Connection
 export async function connectToDatabase() {
     dotenv.config();
 
