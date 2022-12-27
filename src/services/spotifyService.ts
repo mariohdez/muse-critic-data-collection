@@ -2,6 +2,9 @@
 
 import * as dotenv from "dotenv";
 import axios from 'axios';
+import * as qs from "querystring";
+import Artist from "../models/artist";
+import { networkInterfaces } from "os";
 
 const spotifyTokenUrl: string = "https://accounts.spotify.com/api/token";
 
@@ -48,21 +51,38 @@ export async function getSpotifyAuthenticationToken() {
     });
 }
 
-export async function getArtistId(test: string): Promise<any> {
-    const spotifySearchUrl: string = `https://api.spotify.com/v1/search?q=Kendrick+Lamar&type=artist&limit=5`;
+export async function getArtistId(artistName: string): Promise<Artist> {
+    var nameComponents = artistName.split(' ');
+
+    var nameQueryParameter = nameComponents[0];
+
+    for (var i = 1; i < nameComponents.length; ++i) {
+        nameQueryParameter += "+" + nameComponents[i];
+    }
+
+    console.log(`nameQueryParameter: ${nameQueryParameter}`);
+
+    const spotifySearchUrl: string = `https://api.spotify.com/v1/search?q=${nameQueryParameter}&type=artist&limit=5`;
 
     var httpOptions = {
         url: spotifySearchUrl,
         method: 'get',
         headers: { 'Authorization': `Bearer ${authToken}` }
     };
-
+    var artist: Artist;
 
     await axios(httpOptions).then((response: { data: IData, status: number }) => {
         console.log("[getArtistId]: " + response.data.artists.items[0].name)
+        artist = {
+            biography: '',
+            name: response.data.artists.items[0].name,
+            profilePictureURL: response.data.artists.items[0].name,
+        };
+        return artist;
     }).catch((err) => {
         console.log("err: " + err);
-    })
+        return null;
+    });
 }
 
 interface IData {
